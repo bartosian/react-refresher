@@ -26,14 +26,20 @@ const App = () => {
     },
   ];
 
-  const [searchTerm, setSearchTerm] = React.useState('');
+  const [searchTerm, setSearchTerm] = React.useState(
+    localStorage.getItem('search') || 'React'
+  );
+
+  React.useEffect(() => {
+    localStorage.setItem('search', searchTerm);
+  }, [searchTerm]);
 
   const handleSearch = event => {
     setSearchTerm(event.target.value);
   };
 
   const searchedStories = stories.filter(story => 
-    SVGGeometryElement.title
+    story.title
     .toLowerCase()
     .includes(searchTerm.toLowerCase())
   );
@@ -58,14 +64,11 @@ const Search = ({ search, onSearch }) => (
               type="text"
               value={search} 
               onChange={onSearch} />
-            <p>
-            Searching for <strong>{searchTerm}</strong>.
-            </p> 
           </div>
   );
 
 const List = ({ list }) => {
-  list.map(( objectId, ...item ) => (
+  return list.map(( objectID, ...item ) => (
     <Item 
       key={objectID}
       {...item} />
